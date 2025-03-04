@@ -15,20 +15,12 @@ pipeline {
                }
           }
           stage("Code coverage") {
-when {
-changeset "**/.java"
-}
-
                steps {
                     sh "./gradlew jacocoTestReport"
                     sh "./gradlew jacocoTestCoverageVerification"
                }
           }
           stage("Static code analysis") {
-when {
-changeset "**/.java"
-}
-
                steps {
                     sh "./gradlew checkstyleMain"
                }
@@ -95,22 +87,4 @@ changeset "**/.java"
               }
           }
      }
-post {
-    failure {
-     echo "pipeline failure"
-    }
-    success {
-      echo "pipeline ran perfectly"
-    }
-    always {
-     publishHTML (
-      target: [
-       reportDir: 'Chapter08/sample1/build/reports/tests/test',
-       reportFiles: 'index.html',
-       reportName: "JaCoCo Report"
-      ]
-     )
-    }
-  }
-
 }
